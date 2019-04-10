@@ -20,6 +20,8 @@ import java.lang.IllegalArgumentException;
  */
 public class Path {
 
+	
+	
     /**
      * Create a new path that goes through the given list of nodes (in order),
      * choosing the fastest route if multiple are available.
@@ -37,6 +39,9 @@ public class Path {
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
+        int i=0;
+        
+        
         // TODO:
         return new Path(graph, arcs);
     }
@@ -266,11 +271,17 @@ public class Path {
      * 
      * @return Minimum travel time to travel this path (in seconds).
      * 
-     * @deprecated Need to be implemented.
+ 
      */
     public double getMinimumTravelTime() {
-        // TODO:
-        return 0;
+    	int i=0;
+    	double Time=0;
+    	for(i=0;i<this.arcs.size();i++) {
+    		Time+=this.arcs.get(i).getMinimumTravelTime();
+    	}
+    	return Time;
+        
     }
+    
 
 }
