@@ -229,11 +229,12 @@ public class Path {
      * @return Time (in seconds) required to travel this path at the given speed (in
      *         kilometers-per-hour).
      * 
-     * @deprecated Need to be implemented.
      */
     public double getTravelTime(double speed) {
+    	double time=0;
+    	time=(this.getLength()/(speed*Math.pow(10,3)))*3600;
         // TODO:
-        return 0;
+        return time;
     }
 
     /**
