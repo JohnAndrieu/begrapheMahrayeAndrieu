@@ -3,6 +3,8 @@ package org.insa.graph;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.lang.IllegalArgumentException;
+
 
 /**
  * <p>
@@ -188,21 +190,42 @@ public class Path {
      * Check if this path is valid.
      * 
      * A path is valid if any of the following is true:
-     * <ul>
-     * <li>it is empty;</li>
-     * <li>it contains a single node (without arcs);</li>
-     * <li>the first arc has for origin the origin of the path and, for two
+     * 
+     * it is empty;
+     * it contains a single node (without arcs);
+     * 
+     * the first arc has for origin the origin of the path and, for two
      * consecutive arcs, the destination of the first one is the origin of the
-     * second one.</li>
-     * </ul>
+     * second one.
+     * 
      * 
      * @return true if the path is valid, false otherwise.
      * 
-     * @deprecated Need to be implemented.
+     * 
      */
     public boolean isValid() {
         // TODO:
-        return false;
+    	
+    	if(this.isEmpty() == true) {
+    		return true;
+    	}
+    	else if(this.size() == 1) {
+    			return true;
+    	}
+    	else {
+    		
+    		int i;
+    		int taille = this.arcs.size();
+    		
+    		for(i = 0; i < taille - 2; i++){
+    			if(this.arcs.get(i).getDestination() != this.arcs.get(i+1).getOrigin()) {
+    				
+    				return false;
+    			}
+    		}
+    		return true;
+    	}
+    	
     }
 
     /**
