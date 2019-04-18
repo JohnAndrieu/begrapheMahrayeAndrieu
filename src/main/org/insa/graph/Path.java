@@ -39,10 +39,12 @@ public class Path {
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
-        int i=0;
-        
-        
         // TODO:
+        int i;
+        for(i=0;i<nodes.size();i++) {
+    		arcs.get(i) = 
+    	}
+        
         return new Path(graph, arcs);
     }
 
@@ -64,6 +66,11 @@ public class Path {
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
         // TODO:
+        
+        
+        
+        
+        
         return new Path(graph, arcs);
     }
 
