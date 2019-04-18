@@ -50,12 +50,14 @@ public class Path {
         }
         else {
         	Iterator <Node> it = nodes.iterator() ;
+        	Node nod1 = it.next() ;
         	while(it.hasNext()) {
-        		Node nod1 = it.next() ;
+        		
+        		Node nod2 = it.next() ;
         		List<Arc> arc1 = nod1.getSuccessors() ;
         		Iterator <Arc> itarc = arc1.iterator() ;
         		while(itarc.hasNext()) { 
-        			Node nod2 = it.next() ;
+        			
         			Arc arc2=itarc.next();
         			//List<Arc> arc1 = nod1.getSuccessors() ; //arc1 contient tous les arcs qui partent de nod1
         			
@@ -63,16 +65,23 @@ public class Path {
         			if( arc2.getDestination() == nod2 ) { //pour tous les arcs on vérifie qu'ils ont comme destination nod2
         				if(arctest==true) {
         					arcFast=arc2;
+        					arctest=true;
         				}
         				else if(arc2.getMinimumTravelTime()<arcFast.getMinimumTravelTime()){
         					arcFast=arc2;
-        					arctest=true;
+        					
         					
         				}
         					
-        				}
-        			else if(arcFast==null){
+        			}
+        			if(arcFast==null){
         				throw new IllegalArgumentException( "arc null pas possible");
+        			}
+        			else {
+        				arcs.add(arcFast);
+        				nod1=nod2;
+        				arctest=false;
+        				
         			}
         			//}
         			}
