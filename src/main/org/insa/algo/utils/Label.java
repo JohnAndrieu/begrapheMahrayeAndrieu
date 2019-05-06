@@ -3,16 +3,13 @@ package org.insa.algo.utils;
 import org.insa.graph.Node;
 
 public class Label {
-	int sommet_courant;
-	boolean marque;
-	int cout;
-	Node pere;
-
 	
+	private int sommet_courant;
+	private boolean marque;
+	private int cout;
+	private Node pere;
 	
-	
-	
-int getcost() {
-	return this.cout;
-}
+	int getcost() {
+		return this.cout;
+	}
 }
