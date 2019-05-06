@@ -52,8 +52,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         while(test_mark == true) {	
         	
         	
-        	
-        	
+        	Label minLabel = LabelHeap.findMin() ;	//on a le min des label
+        	minLabel.setMark(true); 
         	
         	//on vérifie s'il y a des sommets non marqués
         	for(int i = 0; i < nbNodes ; i++) {

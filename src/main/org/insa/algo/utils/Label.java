@@ -32,6 +32,10 @@ public class Label implements Comparable<Label>{
 	public Arc getFather() {
 		return this.pere;
 	}
+	
+	public void setMark(boolean x) {
+		this.marque = x;
+	}
 
 	@Override
 	public int compareTo(Label o) {
