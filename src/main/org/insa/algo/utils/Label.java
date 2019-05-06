@@ -17,19 +17,19 @@ public class Label implements Comparable<Label>{
 		this.pere = papa ;
 	}
 	
-	double getCost() {
+	public double getCost() {
 		return this.cout;
 	}
 	
-	boolean getMark() {
+	public boolean getMark() {
 		return this.marque;
 	}
 	
-	Node getNode() {
+	public Node getNode() {
 		return this.sommet_courant;
 	}
 	
-	Arc getFather() {
+	public Arc getFather() {
 		return this.pere;
 	}
 

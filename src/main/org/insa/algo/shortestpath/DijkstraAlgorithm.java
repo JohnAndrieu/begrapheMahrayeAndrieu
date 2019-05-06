@@ -1,6 +1,7 @@
 package org.insa.algo.shortestpath;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.insa.algo.utils.BinaryHeap;
@@ -24,13 +25,18 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
         final int nbNodes = graph.size();
         
+        boolean test_mark = true ;
+        
         //on récupère les nodes du graph
         List<Node> nodes = new ArrayList <Node> ();
         nodes = graph.getNodes() ;
         
+        //on crée une hashmap
+        HashMap<Integer, Label> hmap = new HashMap<Integer, Label>(); 
+        
         //mettre un label à tous les noeuds
         for(int i = 0 ; i < nbNodes ; i++) {
-        	new Label (nodes.get(i),null,false,Double.POSITIVE_INFINITY) ;
+        	hmap.put(i,new Label (nodes.get(i),null,false,Double.POSITIVE_INFINITY)) ;
         }
         
         //on met l'origine à 0
@@ -43,7 +49,22 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         //on insere l'origine dans le tas
         LabelHeap.insert(OriginLabel);
         
-        
+        while(test_mark == true) {	
+        	
+        	
+        	
+        	
+        	
+        	//on vérifie s'il y a des sommets non marqués
+        	for(int i = 0; i < nbNodes ; i++) {
+        		if(hmap.get(i).getMark() == false) {
+        			test_mark = true ;
+        		}
+        		else {
+        			test_mark = false ;
+        		}
+        	}
+        }
         
         return solution;
     }
