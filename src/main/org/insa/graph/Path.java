@@ -6,15 +6,23 @@ import java.util.Iterator;
 import java.util.List;
 import java.lang.IllegalArgumentException;
 
+
 /**
+ * <p>
  * Class representing a path between nodes in a graph.
+ * </p>
  * 
- * A path is represented as a list of {@link Arc} and not a list of {@link Node}
- * due to the multigraph nature of the considered graphs.
+ * <p>
+ * A path is represented as a list of {@link Arc} with an origin and not a list
+ * of {@link Node} due to the multi-graph nature (multiple arcs between two
+ * nodes) of the considered graphs.
+ * </p>
  *
  */
 public class Path {
 
+	
+	
     /**
      * Create a new path that goes through the given list of nodes (in order),
      * choosing the fastest route if multiple are available.
@@ -26,65 +34,65 @@ public class Path {
      * 
      * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
      *         consecutive nodes in the list are not connected in the graph.
+     * 
+  
      */
-		public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes) throws IllegalArgumentException {
-			List<Arc> arcs = new ArrayList<Arc>();
-			boolean arc_test = false;
-			Arc arc_fast = null;
+    public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
+            throws IllegalArgumentException {
+    	
+        List<Arc> arcs = new ArrayList<Arc>();
+        Arc arcFast = null;
+        Boolean arctest = false;
+        
+        if(nodes.size() == 0) {
+        	return new Path(graph);
+        }
+        else if(nodes.size()==1) {
+        	return new Path(graph, nodes.get(0));
+        }
+        else {
+        	
+        	Iterator <Node> NodeIt = nodes.iterator() ;
+        	Node Node1 = NodeIt.next() ;	//origin
+        	
+        	while(NodeIt.hasNext()) {
+        		
+        		Node Node2 = NodeIt.next() ;	//destination
+        		
+        		List<Arc> Arc1 = Node1.getSuccessors() ;
+        		Iterator <Arc> ArcIt = Arc1.iterator() ;
+        		
+        		while(ArcIt.hasNext()) { 
+        			
+        			Arc Arc = ArcIt.next();	//Sélection du premier arc
+        			      		
+        			if( Arc.getDestination().equals(Node2) ) { //on vérifie qu'ils ont comme destination Node2
+        				if(arctest==false) {
+        					arcFast=Arc;	//l'arc le plus rapide est le premier pour l'instant
+        					arctest=true;
+        				}
+        				else if(Arc.getMinimumTravelTime() < arcFast.getMinimumTravelTime() ){
+        					arcFast = Arc;
+        				}
+        					
+        			}
+        		}
+        		
+        		if(arcFast==null){
+        			throw new IllegalArgumentException("Aucun arcs disponibles : Liste Noeud non valide");
+        		}
+        		else {
+        			arcs.add(arcFast);
+        			Node1 = Node2;
+        			arctest = false;		
+        		}
 	
-			/* Aucun noeud */
-			if (nodes.size() == 0) {
-				return new Path(graph);
-			}
-			/* Un noeud */
-			else if (nodes.size() == 1) {
-				return new Path(graph, nodes.get(0));
-			}
-			/* Au moins deux noeuds */
-			else {
-	
-				Iterator<Node> it_node = nodes.iterator();
-				Node origine = it_node.next();
-	
-				/* Parcours des noeuds */
-				while (it_node.hasNext()) {
-					Node node2 = it_node.next();
-	
-					/* Parcours des arcs dont le noeud est l'origine */
-					Iterator<Arc> arcIter = origine.getSuccessors().iterator();
-	
-					while (arcIter.hasNext()) {
-						Arc arc = arcIter.next();
-						// Teste si l'arc mene bien au noeud souhaite
-						if (arc.getDestination().equals(node2)) {
-							/*
-							 * Si c'est le premier arc que l'on considere, 
-							 * on initialise arc_fast avec cet arc
-							 */
-							if (!arc_test) {
-								arc_fast = arc;
-								arc_test = true;
-							}
-							/* Sinon on regarde, si l'arc est plus rapide */
-							else if (arc.getMinimumTravelTime() < arc_fast.getMinimumTravelTime()) {
-								arc_fast = arc;
-							}
-						}
-					}
-					/* Si on n'a pas retenu d'arc, c'est que la liste de noeuds n'est pas valide */
-					if (arc_fast == null) {
-						throw new IllegalArgumentException();
-					}
-					/* Sinon, on ajoute l'arc le plus rapide */
-					else {
-						arcs.add(arc_fast);
-						origine = node2;
-						arc_test = false;
-					}
-				}
-				return new Path(graph, arcs);
-			}
-		}
+        	}
+        
+        	return new Path(graph, arcs);
+        
+        }
+    }
 
     /**
      * Create a new path that goes through the given list of nodes (in order),
@@ -97,65 +105,64 @@ public class Path {
      * 
      * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
      *         consecutive nodes in the list are not connected in the graph.
+     * 
      */
-		public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes) throws IllegalArgumentException {
-			List<Arc> arcs = new ArrayList<Arc>();
-			boolean arc_test = false;
-			Arc arc_short = null;
-			
-			/* Aucun noeud */
-			if (nodes.size() == 0) {
-				return new Path(graph);
-			}
-			/* Un noeud */
-			else if (nodes.size() == 1) {
-				return new Path(graph, nodes.get(0));
-			}
-			/* Au moins deux noeuds */
-			else {
+    public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
+            throws IllegalArgumentException {
+    	
+        List<Arc> arcs = new ArrayList<Arc>();
+        Arc arcFast = null;
+        Boolean arctest = false;
+        
+        if(nodes.size() == 0) {
+        	return new Path(graph);
+        }
+        else if(nodes.size()==1) {
+        	return new Path(graph, nodes.get(0));
+        }
+        else {
+        	
+        	Iterator <Node> NodeIt = nodes.iterator() ;
+        	Node Node1 = NodeIt.next() ;	//origin
+        	
+        	while(NodeIt.hasNext()) {
+        		
+        		Node Node2 = NodeIt.next() ;	//destination
+        		
+        		List<Arc> Arc1 = Node1.getSuccessors() ;
+        		Iterator <Arc> ArcIt = Arc1.iterator() ;
+        		
+        		while(ArcIt.hasNext()) { 
+        			
+        			Arc Arc = ArcIt.next();	//Sélection du premier arc
+        			      		
+        			if( Arc.getDestination().equals(Node2) ) { //on vérifie qu'ils ont comme destination Node2
+        				if(arctest==false) {
+        					arcFast=Arc;	//l'arc le plus rapide est le premier pour l'instant
+        					arctest=true;
+        				}
+        				else if(Arc.getLength() < arcFast.getLength() ){
+        					arcFast = Arc;
+        				}
+        					
+        			}
+        		}
+        		
+        		if(arcFast==null){
+        			throw new IllegalArgumentException("Aucun arcs disponibles : Liste Noeud non valide");
+        		}
+        		else {
+        			arcs.add(arcFast);
+        			Node1 = Node2;
+        			arctest = false;		
+        		}
 	
-				Iterator<Node> it_node = nodes.iterator();
-				Node origine = it_node.next();
-	
-				/* Parcours des noeuds */
-				while (it_node.hasNext()) {
-					Node node2 = it_node.next();
-	
-					/* Parcours des arcs dont le noeud est l'origine */
-					Iterator<Arc> arcIter = origine.getSuccessors().iterator();
-					
-					while (arcIter.hasNext()) {
-						Arc arc = arcIter.next();
-						// Teste si l'arc mene bien au noeud souhaite
-						if (arc.getDestination().equals(node2)) {
-							/*
-							 * Si c'est le premier arc que l'on considere, 
-							 * on initialise arc_short avec cet arc
-							 */
-							if (!arc_test) {
-								arc_short = arc;
-								arc_test = true;
-							}
-							/* Sinon on regarde, si l'arc est plus court */
-							else if (arc.getLength() < arc_short.getLength()) {
-								arc_short = arc;
-							}
-						}
-					}
-					/* Si on n'a pas retenu d'arc, c'est que la liste de noeuds n'est pas valide */
-					if (arc_short == null) {
-						throw new IllegalArgumentException();
-					}
-					/* Sinon, on ajoute l'arc le plus court */
-					else {
-						arcs.add(arc_short);
-						origine = node2;
-						arc_test = false;
-					}
-				}
-				return new Path(graph, arcs);
-			}						
-		}
+        	}
+        
+        	return new Path(graph, arcs);
+        
+        }
+    }
 
     /**
      * Concatenate the given paths.
@@ -285,36 +292,42 @@ public class Path {
      * Check if this path is valid.
      * 
      * A path is valid if any of the following is true:
-     * <ul>
-     * <li>it is empty;</li>
-     * <li>it contains a single node (without arcs);</li>
-     * <li>the first arc has for origin the origin of the path and, for two
+     * 
+     * it is empty;
+     * it contains a single node (without arcs);
+     * 
+     * the first arc has for origin the origin of the path and, for two
      * consecutive arcs, the destination of the first one is the origin of the
-     * second one.</li>
-     * </ul>
+     * second one.
+     * 
      * 
      * @return true if the path is valid, false otherwise.
+     * 
+     * 
      */
     public boolean isValid() {
-    	/* Le chemin est vide */
-    	if (this.isEmpty()) {
+        // TODO:
+    	
+    	if(this.isEmpty() == true) {
     		return true;
     	}
-    	/* Le chemin contient un seul noeud */
-    	else if (this.size() == 1) {
-    		return true;
+    	else if(this.size() == 1) {
+    			return true;
     	}
-    	/* Le chemin contient au moins deux noeuds */
     	else {
-    		Node origine = this.getOrigin();
-    		for (Arc arc : this.arcs) {
-    			if (!origine.equals(arc.getOrigin())) {
+    		
+    		int i;
+    		int taille = this.arcs.size();
+    		
+    		for(i = 0; i < taille - 2; i++){
+    			if(this.arcs.get(i).getDestination() != this.arcs.get(i+1).getOrigin()) {
+    				
     				return false;
     			}
-    			origine = arc.getDestination();
-    		} 			
+    		}
+    		return true;
     	}
-        return true;
+    	
     }
 
     /**
@@ -324,11 +337,13 @@ public class Path {
      * 
      */
     public float getLength() {
-    	float totalLength = 0.0f;
-    	for (Arc myArc : this.arcs) {
-    		totalLength += myArc.getLength();
+        // TODO:
+    	float tot_length = 0;
+    	int i;
+    	for(i=0;i<this.arcs.size();i++) {
+    		tot_length += this.arcs.get(i).getLength();
     	}
-        return totalLength;
+        return tot_length;
     }
 
     /**
@@ -338,13 +353,13 @@ public class Path {
      * 
      * @return Time (in seconds) required to travel this path at the given speed (in
      *         kilometers-per-hour).
+     * 
      */
     public double getTravelTime(double speed) {
-    	double temps = 0.0;
-    	double vitesseConvertie = speed * (1000.0/3600.0); // vitesse en m/s
-    	float longueur = getLength();
-    	temps = longueur / vitesseConvertie;
-        return temps;
+    	double time=0;
+    	time=(this.getLength()/(speed*Math.pow(10,3)))*3600;
+        // TODO:
+        return time;
     }
 
     /**
@@ -353,13 +368,17 @@ public class Path {
      * 
      * @return Minimum travel time to travel this path (in seconds).
      * 
+ 
      */
     public double getMinimumTravelTime() {
-    	double temps = 0;
-    	for (Arc myArc : this.arcs) {
-    		temps += myArc.getMinimumTravelTime();
+    	int i=0;
+    	double Time=0;
+    	for(i=0;i<this.arcs.size();i++) {
+    		Time+=this.arcs.get(i).getMinimumTravelTime();
     	}
-        return temps;
+    	return Time;
+        
     }
+    
 
 }
