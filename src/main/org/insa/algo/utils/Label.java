@@ -3,7 +3,7 @@ package org.insa.algo.utils;
 import org.insa.graph.Arc;
 import org.insa.graph.Node;
 
-public class Label {
+public class Label implements Comparable<Label>{
 
 	private Node sommet_courant;
 	private boolean marque;
@@ -17,7 +17,26 @@ public class Label {
 		this.pere = papa ;
 	}
 	
-	double getcost() {
+	double getCost() {
 		return this.cout;
+	}
+	
+	boolean getMark() {
+		return this.marque;
+	}
+	
+	Node getNode() {
+		return this.sommet_courant;
+	}
+	
+	Arc getFather() {
+		return this.pere;
+	}
+
+	@Override
+	public int compareTo(Label o) {
+		// TODO Auto-generated method stub
+		
+		return 0;
 	}
 }
