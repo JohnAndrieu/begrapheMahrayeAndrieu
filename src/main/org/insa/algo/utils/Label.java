@@ -10,6 +10,13 @@ public class Label {
 	private int cout;
 	private Arc pere;
 	
+	public Label (Node courant, Arc papa, boolean mark, int cost) {
+		this.sommet_courant = courant ;
+		this.marque = mark ;
+		this.cout = cost ;
+		this.pere = papa ;
+	}
+	
 	int getcost() {
 		return this.cout;
 	}
