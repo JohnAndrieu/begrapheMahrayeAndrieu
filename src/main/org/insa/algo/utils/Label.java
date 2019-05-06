@@ -1,16 +1,16 @@
 package org.insa.algo.utils;
 
+import org.insa.graph.Arc;
 import org.insa.graph.Node;
 
 public class Label {
 
-	private int sommet_courant;
+	private Node sommet_courant;
 	private boolean marque;
 	private int cout;
-	private Node pere;
+	private Arc pere;
 	
 	int getcost() {
 		return this.cout;
-
 	}
 }
