@@ -45,6 +45,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         //on met l'origine à 0
         Node origin = data.getOrigin() ;
         Label OriginLabel = new Label (origin,null,false,0);
+        OriginLabel.setInTas();
         
         //on crée un tas de label
         BinaryHeap<Label> LabelHeap = new BinaryHeap <Label> () ;
@@ -62,7 +63,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	successeurs = minLabel.getNode().getSuccessors() ; //les successeurs y
         	
         	for(int i = 0 ; i < successeurs.size()-1 ; i++ ) {
-        		for(int j = 0 ; j < hmap.size()-1 ; i++) {
+        		for(int j = 0 ; j < hmap.size()-1 ; j++) {
 	        		if(hmap.get(j).getNode().equals(successeurs.get(i).getDestination()) 
 	        				&& hmap.get(j).getMark() == false) { 	//on verifie si le noeud selectionné est mark
 	        			
