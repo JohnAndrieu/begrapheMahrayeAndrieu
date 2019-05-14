@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.insa.algo.AbstractSolution.Status;
 import org.insa.algo.utils.BinaryHeap;
 import org.insa.graph.Arc;
 import org.insa.algo.utils.Label;
 import org.insa.graph.Graph;
 import org.insa.graph.Node;
+import org.insa.graph.Path;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
@@ -62,7 +64,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	successeurs = minLabel.getNode().getSuccessors() ; //les successeurs y
         	
         	for(int i = 0 ; i < successeurs.size()-1 ; i++ ) {
-        		for(int j = 0 ; j < hmap.size()-1 ; i++) {
+        		for(int j = 0 ; j < hmap.size()-1 ; j++) {
 	        		if(hmap.get(j).getNode().equals(successeurs.get(i).getDestination()) 
 	        				&& hmap.get(j).getMark() == false) { 	//on verifie si le noeud selectionné est mark
 	        			
@@ -92,7 +94,16 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         		}
         	}
         }
-        
+        List<Arc> arcSolution = new ArrayList <Arc>() ;
+        for(int j = 1 ; j < hmap.size()-1 ; j++) {
+        	if(hmap.get(j).getInTas()) {
+        		arcSolution.add(hmap.get(j).)
+        	}
+        	
+        	
+        	
+        }
+        solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcSolution));
         return solution;
     }
 
