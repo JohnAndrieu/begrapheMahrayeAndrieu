@@ -65,20 +65,25 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	for(int i = 0 ; i < successeurs.size()-1 ; i++ ) {
         		
         		int indice = successeurs.get(i).getDestination().getId();
+        		Label lbSuccess = hmap.get(indice) ;
         			
-	        		if(hmap.get(indice) != null && hmap.get(i).getMark() == false) { 	//on verifie si le noeud selectionné est mark
+	        		if(lbSuccess != null && lbSuccess.getMark() == false) { 	//on verifie si le noeud selectionné est mark
 	        			
 	        			double w  = minLabel.getCost() + data.getCost(successeurs.get(indice)) ;
 	        			
-	        			if(hmap.get(indice).getCost() > w) {
-	        				hmap.get(indice).setCost(w);
-	        				if(hmap.get(indice).getInTas() == true) {
-	        					LabelHeap.remove(hmap.get(indice));
+	        			if(lbSuccess.getCost() > w) {
+	        				
+	        				lbSuccess.setCost(w);
+	        				
+	        				if(lbSuccess.getInTas() == true) {
+	        					LabelHeap.remove(lbSuccess);
 	        				}
 	        				else {
-	        					hmap.get(indice).setInTas();
+	        					lbSuccess.setInTas();
 	        				}
-	        				LabelHeap.insert(hmap.get(indice)) ; 
+	        				LabelHeap.insert(lbSuccess) ; 
+	        				lbSuccess.setFather(successeurs.get(i)); 
+	        				
 	        			}
 	        		}
         		
