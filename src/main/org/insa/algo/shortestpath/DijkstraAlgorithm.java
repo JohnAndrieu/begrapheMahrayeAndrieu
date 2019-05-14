@@ -58,6 +58,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         List<Arc> successeurs = new ArrayList <Arc>() ;
         List<Arc> arcSolution = new ArrayList <Arc>() ;
         
+        // Initialize array of predecessors.
+        Arc[] predecessorArcs = new Arc[nbNodes];
+        
         while(test_mark == true) {	
         	
         	Label minLabel = LabelHeap.findMin() ;	//on a le min des label x ici on est dans le tas
@@ -86,15 +89,16 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        				}
 	        				LabelHeap.insert(lbSuccess) ; 
 	        				lbSuccess.setFather(successeurs.get(i)); 
-	        				arcSolution.add(successeurs.get(i));
+	        				predecessorArcs[indice] = successeurs.get(i);
 	        			}
 	        		}
-        		
+	        		
+	        		
         	}
         	
         	//on vérifie s'il y a des sommets non marqués
         	for(int i = 0; i < nbNodes ; i++) {
-        		if(hmap.get(i).getMark() == false) {
+        		if(hmap.get(nodes.get(i).getId()).getMark() == false) {
         			test_mark = true ;
         		}
         		else {
@@ -103,6 +107,11 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	}
         	
         }
+        
+        
+     
+        
+        
         
         solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcSolution));
         return solution;
