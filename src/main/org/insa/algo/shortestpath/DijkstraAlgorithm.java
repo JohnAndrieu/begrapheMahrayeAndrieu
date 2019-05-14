@@ -39,7 +39,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         
         //mettre un label à tous les noeuds
         for(int i = 0 ; i < nbNodes-1 ; i++) {
-        	hmap.put(i,new Label (nodes.get(i),null,false,Double.POSITIVE_INFINITY)) ;
+        	hmap.put(nodes.get(i).getId(),new Label (nodes.get(i),null,false,Double.POSITIVE_INFINITY)) ;
         }
         
         //on met l'origine à 0
@@ -57,30 +57,36 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         
         while(test_mark == true) {	
         	
-        	Label minLabel = LabelHeap.findMin() ;	//on a le min des label x
+        	Label minLabel = LabelHeap.findMin() ;	//on a le min des label x ici on est dans le tas
         	minLabel.setMark(true); 	//on le mark true
         	
-        	successeurs = minLabel.getNode().getSuccessors() ; //les successeurs y
-        	
+        	successeurs = minLabel.getNode().getSuccessors() ; //les successeurs y 
+
         	for(int i = 0 ; i < successeurs.size()-1 ; i++ ) {
-        		for(int j = 0 ; j < hmap.size()-1 ; j++) {
-	        		if(hmap.get(j).getNode().equals(successeurs.get(i).getDestination()) 
-	        				&& hmap.get(j).getMark() == false) { 	//on verifie si le noeud selectionné est mark
+        		
+        		int indice = successeurs.get(i).getDestination().getId();
+        		Label lbSuccess = hmap.get(indice) ;
+        			
+	        		if(lbSuccess != null && lbSuccess.getMark() == false) { 	//on verifie si le noeud selectionné est mark
 	        			
-	        			double w  = minLabel.getCost() + data.getCost(successeurs.get(i)) ;
+	        			double w  = minLabel.getCost() + data.getCost(successeurs.get(indice)) ;
 	        			
-	        			if(hmap.get(j).getCost() > w) {
-	        				hmap.get(j).setCost(w);
-	        				if(hmap.get(j).getInTas() == true) {
-	        					LabelHeap.remove(hmap.get(j));
+	        			if(lbSuccess.getCost() > w) {
+	        				
+	        				lbSuccess.setCost(w);
+	        				
+	        				if(lbSuccess.getInTas() == true) {
+	        					LabelHeap.remove(lbSuccess);
 	        				}
 	        				else {
-	        					hmap.get(j).setInTas();
+	        					lbSuccess.setInTas();
 	        				}
-	        				LabelHeap.insert(hmap.get(j)) ; 
+	        				LabelHeap.insert(lbSuccess) ; 
+	        				lbSuccess.setFather(successeurs.get(i)); 
+	        				
 	        			}
 	        		}
-        		}
+        		
         	}
         	
         	//on vérifie s'il y a des sommets non marqués

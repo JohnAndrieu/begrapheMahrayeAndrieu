@@ -35,6 +35,10 @@ public class Label implements Comparable<Label>{
 		return this.pere;
 	}
 	
+	public void setFather(Arc x) {
+		this.pere = x;
+	}
+	
 	public void setMark(boolean x) {
 		this.marque = x;
 	}
