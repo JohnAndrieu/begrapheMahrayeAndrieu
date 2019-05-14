@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.insa.algo.AbstractSolution.Status;
 import org.insa.algo.utils.BinaryHeap;
 import org.insa.graph.Arc;
 import org.insa.algo.utils.Label;
 import org.insa.graph.Graph;
 import org.insa.graph.Node;
+import org.insa.graph.Path;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
@@ -54,6 +56,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         LabelHeap.insert(OriginLabel);
         
         List<Arc> successeurs = new ArrayList <Arc>() ;
+        List<Arc> arcSolution = new ArrayList <Arc>() ;
         
         while(test_mark == true) {	
         	
@@ -83,7 +86,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        				}
 	        				LabelHeap.insert(lbSuccess) ; 
 	        				lbSuccess.setFather(successeurs.get(i)); 
-	        				
+	        				arcSolution.add(successeurs.get(i));
 	        			}
 	        		}
         		
@@ -98,8 +101,10 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         			test_mark = false ;
         		}
         	}
+        	
         }
         
+        solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcSolution));
         return solution;
     }
 
