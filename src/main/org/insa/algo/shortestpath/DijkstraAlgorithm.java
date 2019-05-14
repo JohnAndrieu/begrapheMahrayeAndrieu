@@ -67,7 +67,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        		if(hmap.get(j).getNode().equals(successeurs.get(i).getDestination()) 
 	        				&& hmap.get(j).getMark() == false) { 	//on verifie si le noeud selectionné est mark
 	        			
-	        			double w  = minLabel.getCost() + successeurs.get(i).getMinimumTravelTime() ;
+	        			double w  = minLabel.getCost() + data.getCost(successeurs.get(i)) ;
 	        			
 	        			if(hmap.get(j).getCost() > w) {
 	        				hmap.get(j).setCost(w);
