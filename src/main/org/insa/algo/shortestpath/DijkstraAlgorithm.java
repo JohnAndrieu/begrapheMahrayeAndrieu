@@ -20,6 +20,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
     @Override
     protected ShortestPathSolution doRun() {
+    	System.out.println("Process : doRun() \n") ;
         ShortestPathData data = getInputData();
         ShortestPathSolution solution = null;
         // TODO:
