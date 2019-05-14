@@ -47,6 +47,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         //on met l'origine à 0
         Node origin = data.getOrigin() ;
         Label OriginLabel = new Label (origin,null,false,0);
+        OriginLabel.setInTas();
         
         //on crée un tas de label
         BinaryHeap<Label> LabelHeap = new BinaryHeap <Label> () ;
