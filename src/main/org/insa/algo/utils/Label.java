@@ -1,67 +1,71 @@
 package org.insa.algo.utils;
 
-import org.insa.graph.Arc;
-import org.insa.graph.Node;
+import org.insa.graph.*;
 
-public class Label implements Comparable<Label>{
-
-	private Node sommet_courant;
-	private boolean marque;
-	private double cout;
-	private Arc pere;
-	private boolean inTas;
+public class Label implements Comparable<Label> {
+	protected float cost;
+	private boolean marked; // vrai si le noeud a été marqué
+	private Arc father;
+	private Node node;
+	private boolean inTas; // vrai si le noeud a été mis dans le tas
 	
-	public Label (Node courant) {
-		this.sommet_courant = courant ;
-		this.marque = false ;
-		this.cout = Double.POSITIVE_INFINITY;
-		this.pere = null ;
-		this.inTas = false ;
-	}
-	
-	public double getCost() {
-		return this.cout;
-	}
-	
-	public boolean getMark() {
-		return this.marque;
+	public Label(Node noeud){
+		this.node = noeud;
+		this.marked = false;
+		this.cost = Float.POSITIVE_INFINITY;
+		this.father = null; 
+		this.inTas = false;
 	}
 	
 	public Node getNode() {
-		return this.sommet_courant;
+		return this.node;
+	}
+	
+	public float getCost() {
+		return this.cost;
+	}
+	
+	public float getTotalCost() {
+		return this.cost;
+	}
+	
+	/* Retourne true si le noeud a été marqué */
+	public boolean getMark() {
+		return this.marked;
 	}
 	
 	public Arc getFather() {
-		return this.pere;
+		return this.father;
 	}
 	
-	public void setFather(Arc x) {
-		this.pere = x;
-	}
-	
-	public void setMark(boolean x) {
-		this.marque = x;
-	}
-	
-	public void setCost(double x) {
-		this.cout = x;
-	}
-	
+	/* Retourne true si le noeud a été mis dans le tas */
 	public boolean getInTas() {
 		return this.inTas;
+	}	
+	
+	public void setMark() {
+		this.marked = true;
+	}
+	
+	public void setCost(float cout) {
+		this.cost = cout;
+	}
+	
+	public void setFather(Arc father) {
+		this.father = father;
 	}
 	
 	public void setInTas() {
 		this.inTas = true;
 	}
-
-	@Override
-	public int compareTo(Label o) {
+	
+	/* Compare les Labels selon leur coût */
+	public int compareTo(Label autre) {
 		int resultat;
-		if (this.getCost() < o.getCost()) {
+		if (this.getTotalCost() < autre.getTotalCost()) {
 			resultat = -1;
 		}
-		else if (this.getCost() == o.getCost()) {
+		else if (this.getTotalCost() == autre.getTotalCost()) {
 			resultat = 0;
 		}
 		else {
@@ -69,4 +73,5 @@ public class Label implements Comparable<Label>{
 		}
 		return resultat;
 	}
+	
 }
