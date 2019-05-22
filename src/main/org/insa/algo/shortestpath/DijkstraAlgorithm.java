@@ -1,9 +1,6 @@
 package org.insa.algo.shortestpath;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Collections;
+import java.util.*; 
 
 import org.insa.algo.AbstractSolution.Status;
 import org.insa.algo.utils.BinaryHeap;
@@ -22,98 +19,86 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     @Override
     protected ShortestPathSolution doRun() {
         ShortestPathData data = getInputData();
-       
         ShortestPathSolution solution = null;
-        
         Graph graph = data.getGraph();
+        
+        int sizeGraph = graph.size();
+        
+        List<Node> nodeGraph = new ArrayList <Node> ();
+        nodeGraph = graph.getNodes() ;
 
-        final int nbNodes = graph.size();
-        
-        boolean test_mark = true ;
-        
-        boolean fin = false ;
-        
-        //on récupère les nodes du graph
-        List<Node> nodes = new ArrayList <Node> ();
-        nodes = graph.getNodes() ;
-        
-        //on crée une hashmap
+        boolean fin = false;
+
         HashMap<Integer, Label> hmap = new HashMap<Integer, Label>(); 
 
-        //mettre un label à tous les noeuds
-        for(int i = 0 ; i < nbNodes-1 ; i++) {
-        	hmap.put(nodes.get(i).getId(),new Label (nodes.get(i),null,false,Double.POSITIVE_INFINITY)) ;
+        Iterator<Node> nodeIt = nodeGraph.iterator();
+        while(nodeIt.hasNext()) {
+        	Node nodeCurrent = nodeIt.next();
+        	if(nodeCurrent.equals(data.getOrigin())) {} else {
+        	hmap.put(nodeCurrent.getId(),new Label (nodeCurrent)) ;
+        	}
         }
         
-        //on met l'origine à 0
+        // Initialize array of predecessors.
+        Arc[] predecessorArcs = new Arc[sizeGraph];
+        
+        // Tas de labels
+        BinaryHeap<Label> labelHeap = new BinaryHeap <Label> () ;
+        
+        // Ajout de l'origine
         Node origin = data.getOrigin() ;
-        Label OriginLabel = new Label (origin,null,false,0);
+        Label originLabel = new Label (origin);
+        hmap.put(origin.getId(), originLabel);
         
-      
-        
-        //on crée un tas de label
-        BinaryHeap<Label> LabelHeap = new BinaryHeap <Label> () ;
-
-        //on insere l'origine dans le tas
-        LabelHeap.insert(OriginLabel);
-        OriginLabel.setInTas();
+        labelHeap.insert(originLabel);
+        originLabel.setInTas();
+        originLabel.setCost(0);
         
         notifyOriginProcessed(data.getOrigin());
         
-        List<Arc> successeurs = new ArrayList <Arc>() ;
-        
-        // Initialize array of predecessors.
-        Arc[] predecessorArcs = new Arc[nbNodes];
-        
-        while(test_mark == true && fin == false) {	
+        while(!labelHeap.isEmpty() && !fin) {	
         	
-        	Label minLabel = LabelHeap.deleteMin() ;	//on a le min des label x ici on est dans le tas
-        	minLabel.setMark(true); 	//on le mark true
+        	Label minLabel = labelHeap.deleteMin() ;
+        	minLabel.setMark(true); 	
         	notifyNodeMarked(minLabel.getNode());
         	
         	if (minLabel.getNode() == data.getDestination()) {
 				fin = true;
 			}
         	
-        	successeurs = minLabel.getNode().getSuccessors() ; //les successeurs y 
+        	List<Arc> successeurs = new ArrayList <Arc>() ;
+        	successeurs = minLabel.getNode().getSuccessors() ;
+        	Iterator <Arc> arc = successeurs.iterator();
 
-        	for(int i = 0 ; i < successeurs.size()-1 ; i++ ) {
+        	while(arc.hasNext()) {
+        		Arc arcIter = arc.next();
         		
-        		int indice = successeurs.get(i).getDestination().getId();
-        		Label lbSuccess = hmap.get(indice) ;
-        		notifyNodeReached(successeurs.get(i).getDestination());
+        		int id = arcIter.getDestination().getId();
+        		Label lbSuccess = hmap.get(id) ;
+        		
+        		notifyNodeReached(arcIter.getDestination());
         			
-	        		if(lbSuccess.getMark() == false) { 	//on verifie si le noeud selectionné est mark
+	        		if(!lbSuccess.getMark()) { 
 	        			
-	        			double w  = minLabel.getCost() + data.getCost(successeurs.get(i)) ;
-	        			
-	        			if(lbSuccess.getCost() > w) {
+	        			if(lbSuccess.getCost() > minLabel.getCost()
+	        					+ data.getCost(arcIter)) {
 	        				
-	        				lbSuccess.setCost(w);
+	        				lbSuccess.setCost(minLabel.getCost()
+		        					+ data.getCost(arcIter));
+	        				lbSuccess.setFather(arcIter); 
 	        				
-	        				
-	        				if(lbSuccess.getInTas() == true) {
-	        					LabelHeap.remove(lbSuccess);
+	        				if(lbSuccess.getInTas()) {
+	        					labelHeap.remove(lbSuccess);
 	        				}
 	        				else {
 	        					lbSuccess.setInTas();
 	        				}
-	        				LabelHeap.insert(lbSuccess) ; 
-	        				lbSuccess.setFather(successeurs.get(i)); 
-	        				predecessorArcs[indice] = successeurs.get(i);
+	        				labelHeap.insert(lbSuccess) ; 
+	        			
+	        				predecessorArcs[id] = arcIter;
 	        			}
 	        		}
 	        		
-        	}
-        	
-        	//on vérifie s'il y a des sommets non marqués
-        	for(int i = 0; i < nbNodes-1 ; i++) {
-        		if(hmap.get(nodes.get(i).getId()).getMark() == false) {
-        			test_mark = true ;
-        		}
-        		else {
-        			test_mark = false ;
-        		}
         	}
         	
         }

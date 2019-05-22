@@ -11,11 +11,11 @@ public class Label implements Comparable<Label>{
 	private Arc pere;
 	private boolean inTas;
 	
-	public Label (Node courant, Arc papa, boolean mark, double cost) {
+	public Label (Node courant) {
 		this.sommet_courant = courant ;
-		this.marque = mark ;
-		this.cout = cost ;
-		this.pere = papa ;
+		this.marque = false ;
+		this.cout = Double.POSITIVE_INFINITY;
+		this.pere = null ;
 		this.inTas = false ;
 	}
 	
