@@ -62,6 +62,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	minLabel.setMark(true); 	
         	notifyNodeMarked(minLabel.getNode());
         	
+        	
+        	
         	if (minLabel.getNode() == data.getDestination()) {
 				fin = true;
 			}
@@ -103,6 +105,15 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        			}
 	        		}
 	        		
+        	}
+        	
+        	Label new_min = labelHeap.findMin();
+        	int res = new_min.compareTo(minLabel) ;
+        	if(res == 1) {
+        		System.out.println("[OK] Cout lbCurrent = "+minLabel.getCost()+" < Cout lbSucess = "+new_min.getCost());
+        	}
+        	else if(res == -1){
+        		System.out.println("[Warning] Cout lbCurrent = "+minLabel.getCost()+" > Cout lbSucess = "+new_min.getCost());
         	}
         	
         }
