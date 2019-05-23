@@ -124,7 +124,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
         }
         
-        System.out.println("nombre d'itération:"+ nbIter);
+        System.out.println("Nombre d'itérations : "+ nbIter);
         
      // Destination has no predecessor, the solution is infeasible...
      		if (predecessorArcs[data.getDestination().getId()] == null) {
@@ -149,7 +149,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
      			// Create the final solution.
      			solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcs));
-     			System.out.println("nombre d'arcs:" + arcs.size() );
+     			System.out.println("Nombre d'arcs : " + arcs.size() );
 
      		}
      		
