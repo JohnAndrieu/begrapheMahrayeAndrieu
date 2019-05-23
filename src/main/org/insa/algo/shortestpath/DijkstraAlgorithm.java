@@ -90,11 +90,10 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        				lbSuccess.setCost(minLabel.getCost()
 		        					+ (double)data.getCost(arcIter));
 	        				
-<<<<<<< HEAD
+
 	        				lbSuccess.setCost(w); 
-=======
 	        				lbSuccess.setFather(arcIter); 
->>>>>>> 701f505f930ed0ca88b5a64efef5b2922dcb4c81
+
 	        				
 	        				if(lbSuccess.getInTas()) {
 	        					labelHeap.remove(lbSuccess);
@@ -102,13 +101,10 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        				else {
 	        					lbSuccess.setInTas();
 	        				}
-<<<<<<< HEAD
 	        				LabelHeap.insert(lbSuccess) ; 
 	        				lbSuccess.setFather(successeurs.get(i));
-=======
 	        				labelHeap.insert(lbSuccess) ; 
 	        				predecessorArcs[id] = arcIter;
->>>>>>> 701f505f930ed0ca88b5a64efef5b2922dcb4c81
 	        			}
 	        		}
 	        		
