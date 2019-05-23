@@ -76,7 +76,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        			
 	        			if(lbSuccess.getCost() > w) {
 	        				
-	        				lbSuccess.setCost(w);
+	        				lbSuccess.setCost(w); 
 	        				
 	        				if(lbSuccess.getInTas() == true) {
 	        					LabelHeap.remove(lbSuccess);
@@ -85,8 +85,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        					lbSuccess.setInTas();
 	        				}
 	        				LabelHeap.insert(lbSuccess) ; 
-	        				lbSuccess.setFather(successeurs.get(i)); 
-	        				arcSolution.add(successeurs.get(i));
+	        				lbSuccess.setFather(successeurs.get(i));
 	        			}
 	        		}
         		
