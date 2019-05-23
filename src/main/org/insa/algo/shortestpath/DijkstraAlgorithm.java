@@ -1,8 +1,6 @@
 package org.insa.algo.shortestpath;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*; 
 
 import org.insa.algo.AbstractSolution.Status;
 import org.insa.algo.utils.BinaryHeap;
@@ -22,88 +20,128 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     protected ShortestPathSolution doRun() {
         ShortestPathData data = getInputData();
         ShortestPathSolution solution = null;
-        // TODO:
-        
         Graph graph = data.getGraph();
+        
+        int sizeGraph = graph.size();
+        
+        List<Node> nodeGraph = new ArrayList <Node> ();
+        nodeGraph = graph.getNodes() ;
 
-        final int nbNodes = graph.size();
-        
-        boolean test_mark = true ;
-        
-        //on récupère les nodes du graph
-        List<Node> nodes = new ArrayList <Node> ();
-        nodes = graph.getNodes() ;
-        
-        //on crée une hashmap
+        boolean fin = false;
+
         HashMap<Integer, Label> hmap = new HashMap<Integer, Label>(); 
-        
-        
-        
-        //mettre un label à tous les noeuds
-        for(int i = 0 ; i < nbNodes-1 ; i++) {
-        	hmap.put(nodes.get(i).getId(),new Label (nodes.get(i),null,false,Double.POSITIVE_INFINITY)) ;
+
+        Iterator<Node> nodeIt = nodeGraph.iterator();
+        while(nodeIt.hasNext()) {
+        	Node nodeCurrent = nodeIt.next();
+        	if(nodeCurrent.equals(data.getOrigin())) {} else {
+        	hmap.put(nodeCurrent.getId(),new Label (nodeCurrent)) ;
+        	}
         }
         
-        //on met l'origine à 0
+        // Initialize array of predecessors.
+        Arc[] predecessorArcs = new Arc[sizeGraph];
+        
+        // Tas de labels
+        BinaryHeap<Label> labelHeap = new BinaryHeap <Label> () ;
+        
+        // Ajout de l'origine
         Node origin = data.getOrigin() ;
-        Label OriginLabel = new Label (origin,null,false,0);
-        OriginLabel.setInTas();
+        Label originLabel = new Label (origin);
+        hmap.put(origin.getId(), originLabel);
         
-        //on crée un tas de label
-        BinaryHeap<Label> LabelHeap = new BinaryHeap <Label> () ;
-
-        //on insere l'origine dans le tas
-        LabelHeap.insert(OriginLabel);
+        labelHeap.insert(originLabel);
+        originLabel.setInTas();
+        originLabel.setCost(0);
         
-        List<Arc> successeurs = new ArrayList <Arc>() ;
-        List<Arc> arcSolution = new ArrayList <Arc>() ;
+        notifyOriginProcessed(data.getOrigin());
         
-        while(test_mark == true) {	
+        while(!labelHeap.isEmpty() && !fin) {	
         	
-        	Label minLabel = LabelHeap.findMin() ;	//on a le min des label x ici on est dans le tas
-        	minLabel.setMark(true); 	//on le mark true
+        	Label minLabel = labelHeap.deleteMin() ;
+        	minLabel.setMark(true); 	
+        	notifyNodeMarked(minLabel.getNode());
         	
-        	successeurs = minLabel.getNode().getSuccessors() ; //les successeurs y 
+        	if (minLabel.getNode() == data.getDestination()) {
+				fin = true;
+			}
+        	
+        	List<Arc> successeurs = new ArrayList <Arc>() ;
+        	successeurs = minLabel.getNode().getSuccessors() ;
+        	Iterator <Arc> arc = successeurs.iterator();
 
-        	for(int i = 0 ; i < successeurs.size()-1 ; i++ ) {
+        	while(arc.hasNext()) {
+        		Arc arcIter = arc.next();
         		
-        		int indice = successeurs.get(i).getDestination().getId();
-        		Label lbSuccess = hmap.get(indice) ;
+        		if (!data.isAllowed(arcIter)) {
+					continue;
+				}
+        		
+        		int id = arcIter.getDestination().getId();
+        		Label lbSuccess = hmap.get(id) ;
+        		
+        		notifyNodeReached(arcIter.getDestination());
         			
-	        		if(lbSuccess != null && lbSuccess.getMark() == false) { 	//on verifie si le noeud selectionné est mark
+	        		if(!lbSuccess.getMark()) { 
 	        			
-	        			double w  = minLabel.getCost() + data.getCost(successeurs.get(indice)) ;
-	        			
-	        			if(lbSuccess.getCost() > w) {
+	        			if(lbSuccess.getCost() > minLabel.getCost()
+	        					+ data.getCost(arcIter)) {
 	        				
+	        				lbSuccess.setCost(minLabel.getCost()
+		        					+ (double)data.getCost(arcIter));
+	        				
+<<<<<<< HEAD
 	        				lbSuccess.setCost(w); 
+=======
+	        				lbSuccess.setFather(arcIter); 
+>>>>>>> 701f505f930ed0ca88b5a64efef5b2922dcb4c81
 	        				
-	        				if(lbSuccess.getInTas() == true) {
-	        					LabelHeap.remove(lbSuccess);
+	        				if(lbSuccess.getInTas()) {
+	        					labelHeap.remove(lbSuccess);
 	        				}
 	        				else {
 	        					lbSuccess.setInTas();
 	        				}
+<<<<<<< HEAD
 	        				LabelHeap.insert(lbSuccess) ; 
 	        				lbSuccess.setFather(successeurs.get(i));
+=======
+	        				labelHeap.insert(lbSuccess) ; 
+	        				predecessorArcs[id] = arcIter;
+>>>>>>> 701f505f930ed0ca88b5a64efef5b2922dcb4c81
 	        			}
 	        		}
-        		
-        	}
-        	
-        	//on vérifie s'il y a des sommets non marqués
-        	for(int i = 0; i < nbNodes ; i++) {
-        		if(hmap.get(i).getMark() == false) {
-        			test_mark = true ;
-        		}
-        		else {
-        			test_mark = false ;
-        		}
+	        		
         	}
         	
         }
         
-        solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcSolution));
+        
+     // Destination has no predecessor, the solution is infeasible...
+     		if (predecessorArcs[data.getDestination().getId()] == null) {
+     			solution = new ShortestPathSolution(data, Status.INFEASIBLE);
+     		} else {
+
+     			// The destination has been found, notify the observers.
+     			notifyDestinationReached(data.getDestination());
+
+     			// Create the path from the array of predecessors...
+     			ArrayList<Arc> arcs = new ArrayList<>();
+     			Arc arc = predecessorArcs[data.getDestination().getId()];
+
+     			while (arc != null) {
+     				arcs.add(arc);
+     				arc = predecessorArcs[arc.getOrigin().getId()];
+     			}
+
+     			// Reverse the path...
+     			Collections.reverse(arcs);
+
+     			// Create the final solution.
+     			solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcs));
+
+     		}
+
         return solution;
     }
 
