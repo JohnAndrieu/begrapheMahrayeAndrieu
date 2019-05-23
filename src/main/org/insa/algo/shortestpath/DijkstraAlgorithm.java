@@ -88,7 +88,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        					+ data.getCost(arcIter)) {
 	        				
 	        				lbSuccess.setCost(minLabel.getCost()
-		        					+ data.getCost(arcIter));
+		        					+ (double)data.getCost(arcIter));
+	        				
 	        				lbSuccess.setFather(arcIter); 
 	        				
 	        				if(lbSuccess.getInTas()) {
