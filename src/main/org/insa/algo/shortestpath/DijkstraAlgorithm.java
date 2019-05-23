@@ -55,7 +55,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         originLabel.setCost(0);
         
         notifyOriginProcessed(data.getOrigin());
-        
+        int nbIter=0;
         while(!labelHeap.isEmpty() && !fin) {	
         	
         	Label minLabel = labelHeap.deleteMin() ;
@@ -73,6 +73,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	Iterator <Arc> arc = successeurs.iterator();
 
         	while(arc.hasNext()) {
+        		
         		Arc arcIter = arc.next();
         		
         		if (!data.isAllowed(arcIter)) {
@@ -101,12 +102,14 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        					lbSuccess.setInTas();
 	        				}
 	        				labelHeap.insert(lbSuccess) ; 
+	        				
 	        				predecessorArcs[id] = arcIter;
 	        			}
 	        		}
 	        		
         	}
         	
+        	/* Test de la croissance des coûts des labels marqués */
         	Label new_min = labelHeap.findMin();
         	int res = new_min.compareTo(minLabel) ;
         	if(res == 1) {
@@ -116,14 +119,18 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         		System.out.println("[Warning] Cout lbCurrent = "+minLabel.getCost()+" > Cout lbSucess = "+new_min.getCost());
         	}
         	
+        	/* Calcul du nombre d'itération */
+        	nbIter++;
+
         }
         
+        System.out.println("nombre d'itération:"+ nbIter);
         
      // Destination has no predecessor, the solution is infeasible...
      		if (predecessorArcs[data.getDestination().getId()] == null) {
      			solution = new ShortestPathSolution(data, Status.INFEASIBLE);
      		} else {
-
+     			
      			// The destination has been found, notify the observers.
      			notifyDestinationReached(data.getDestination());
 
@@ -134,6 +141,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
      			while (arc != null) {
      				arcs.add(arc);
      				arc = predecessorArcs[arc.getOrigin().getId()];
+     				
      			}
 
      			// Reverse the path...
@@ -141,8 +149,11 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
      			// Create the final solution.
      			solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcs));
+     			System.out.println("nombre d'arcs:" + arcs.size() );
 
      		}
+     		
+     		
 
         return solution;
     }
