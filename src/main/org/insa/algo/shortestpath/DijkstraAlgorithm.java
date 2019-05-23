@@ -6,6 +6,7 @@ import org.insa.algo.AbstractSolution.Status;
 import org.insa.algo.utils.BinaryHeap;
 import org.insa.graph.Arc;
 import org.insa.algo.utils.Label;
+import org.insa.algo.utils.LabelStar;
 import org.insa.graph.Graph;
 import org.insa.graph.Node;
 import org.insa.graph.Path;
@@ -35,7 +36,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         while(nodeIt.hasNext()) {
         	Node nodeCurrent = nodeIt.next();
         	if(nodeCurrent.equals(data.getOrigin())) {} else {
-        	hmap.put(nodeCurrent.getId(),new Label (nodeCurrent)) ;
+        	hmap.put(nodeCurrent.getId(),new LabelStar (nodeCurrent, data)) ;
         	}
         }
         
@@ -47,7 +48,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         
         // Ajout de l'origine
         Node origin = data.getOrigin() ;
-        Label originLabel = new Label (origin);
+        Label originLabel = new LabelStar (origin, data);
         hmap.put(origin.getId(), originLabel);
         
         labelHeap.insert(originLabel);
@@ -87,8 +88,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         			
 	        		if(!lbSuccess.getMark()) { 
 	        			
-	        			if(lbSuccess.getCost() > minLabel.getCost()
-	        					+ data.getCost(arcIter)) {
+	        			if(lbSuccess.getTotalCost() > minLabel.getCost()
+	        					+ data.getCost(arcIter) + (lbSuccess.getTotalCost() - lbSuccess.getCost()) ) {
 	        				
 	        				lbSuccess.setCost(minLabel.getCost()
 		        					+ (double)data.getCost(arcIter));
