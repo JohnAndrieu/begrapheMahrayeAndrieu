@@ -10,7 +10,7 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
         super(data);
     }
     
-    protected Label newLabel(Node node, ShortestPathData data){
+    protected Label Newlb(Node node, ShortestPathData data){
     	LabelStar newlb;
     	newlb= new LabelStar(node,data);
     	return newlb;

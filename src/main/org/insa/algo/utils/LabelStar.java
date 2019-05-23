@@ -2,39 +2,34 @@ package org.insa.algo.utils;
  
 import org.insa.graph.Node;
 import org.insa.graph.Point;
-import org.insa.algo.AbstractInputData.Mode;
 import org.insa.algo.shortestpath.ShortestPathData;
+import org.insa.algo.AbstractInputData;
 
-public class LabelStar extends Label {
+public class LabelStar extends Label implements Comparable<Label> {
 	
-	private double totCost ;
+	private double borneInf ;
 	
 	public LabelStar (Node courant, ShortestPathData data) {
 		super(courant);
+		System.out.println("creation labelstar");
 		
-		if(data.getMode() == Mode.LENGTH) {
-			double lg = Point.distance(courant.getPoint(), data.getDestination().getPoint()) ;
-			this.setTotCost(lg);
-			}
+		if (data.getMode() == AbstractInputData.Mode.LENGTH) {
+			this.borneInf = Point.distance(courant.getPoint(),data.getDestination().getPoint());
+		}
 		else {
-			double v = data.getMaximumSpeed() ;
-			double lg = Point.distance(courant.getPoint(), data.getDestination().getPoint()) ;
-			double tm = lg / v;
-			this.setTotCost(tm) ;
+			int vitesse = Math.max(data.getMaximumSpeed(), data.getGraph().getGraphInformation().getMaximumSpeed());
+			double lg = Point.distance(courant.getPoint(),data.getDestination().getPoint()) ;
+			this.borneInf = lg /(vitesse*1000.0/3600.0);
 		}
 	}
 
-	public double getTotCost() {
-		return totCost;
+	@Override
+	public double getTotalCost() {
+		return this.borneInf+this.cout;
 	}
 
-	public void setTotCost(double totCost) {
-		this.totCost = totCost;
-	}
-	
-	
-	
-	
 }
+
+//on a le cout grace à notre calcul "maison"
 
 

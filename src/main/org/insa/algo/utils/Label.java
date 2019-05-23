@@ -7,10 +7,9 @@ public class Label implements Comparable<Label>{
 
 	private Node sommet_courant;
 	private boolean marque;
-	private double cout;
+	protected double cout;
 	private Arc pere;
 	private boolean inTas;
-	private double totalCost;
 	
 	public Label (Node courant) {
 		this.sommet_courant = courant ;
@@ -60,11 +59,11 @@ public class Label implements Comparable<Label>{
 
 	
 	public double getTotalCost() {
-		return this.totalCost;
+		return this.cout;
 	}
 	
 	public void setCostTotal(double x) {
-		this.totalCost = x;
+		this.cout = x;
 	}
 	
 	@Override
@@ -84,3 +83,6 @@ public class Label implements Comparable<Label>{
 	}
 	
 }
+
+
+//à dire à la soutenance : on a le cout grace à la fonction getcost()
