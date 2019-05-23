@@ -1,6 +1,6 @@
 package org.insa.algo.utils;
 
-import org.insa.graph.Arc;
+import org.insa.graph.Arc; 
 import org.insa.graph.Node;
 
 public class Label implements Comparable<Label>{
@@ -10,6 +10,7 @@ public class Label implements Comparable<Label>{
 	private double cout;
 	private Arc pere;
 	private boolean inTas;
+	private double totalCost;
 	
 	public Label (Node courant) {
 		this.sommet_courant = courant ;
@@ -47,6 +48,8 @@ public class Label implements Comparable<Label>{
 		this.cout = x;
 	}
 	
+	
+	
 	public boolean getInTas() {
 		return this.inTas;
 	}
@@ -55,18 +58,29 @@ public class Label implements Comparable<Label>{
 		this.inTas = true;
 	}
 
+	
+	public double getTotalCost() {
+		return this.totalCost;
+	}
+	
+	public void setCostTotal(double x) {
+		this.totalCost = x;
+	}
+	
 	@Override
 	public int compareTo(Label o) {
 		int resultat;
-		if (this.getCost() < o.getCost()) {
+		if (this.getTotalCost() < o.getTotalCost()) {
 			resultat = -1;
 		}
-		else if (this.getCost() == o.getCost()) {
+		else if (this.getTotalCost() == o.getTotalCost()) {
 			resultat = 0;
 		}
 		else {
 			resultat = 1;
 		}
+		
 		return resultat;
 	}
+	
 }
