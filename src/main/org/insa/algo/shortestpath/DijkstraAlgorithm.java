@@ -1,12 +1,11 @@
 package org.insa.algo.shortestpath;
 
-import java.util.*; 
+import java.util.*;  
 
 import org.insa.algo.AbstractSolution.Status;
 import org.insa.algo.utils.BinaryHeap;
 import org.insa.graph.Arc;
 import org.insa.algo.utils.Label;
-import org.insa.algo.utils.LabelStar;
 import org.insa.graph.Graph;
 import org.insa.graph.Node;
 import org.insa.graph.Path;
@@ -112,7 +111,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        		
         	}
         	
-        	/* Test de la croissance des coûts des labels marqués */
+        	/* Test de la croissance des coûts des labels marqués pour Dijkstra */
         	Label new_min = labelHeap.findMin();
         	int res = new_min.compareTo(minLabel) ;
         	if(res == 1) {

@@ -306,7 +306,6 @@ public class Path {
      * 
      */
     public boolean isValid() {
-        // TODO:
     	
     	if(this.isEmpty() == true) {
     		return true;
@@ -337,7 +336,6 @@ public class Path {
      * 
      */
     public float getLength() {
-        // TODO:
     	float tot_length = 0;
     	int i;
     	for(i=0;i<this.arcs.size();i++) {
@@ -358,7 +356,6 @@ public class Path {
     public double getTravelTime(double speed) {
     	double time=0;
     	time=(this.getLength()/(speed*Math.pow(10,3)))*3600;
-        // TODO:
         return time;
     }
 
