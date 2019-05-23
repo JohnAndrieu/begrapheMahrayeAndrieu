@@ -73,6 +73,10 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	while(arc.hasNext()) {
         		Arc arcIter = arc.next();
         		
+        		if (!data.isAllowed(arcIter)) {
+					continue;
+				}
+        		
         		int id = arcIter.getDestination().getId();
         		Label lbSuccess = hmap.get(id) ;
         		
@@ -94,7 +98,6 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 	        					lbSuccess.setInTas();
 	        				}
 	        				labelHeap.insert(lbSuccess) ; 
-	        			
 	        				predecessorArcs[id] = arcIter;
 	        			}
 	        		}
