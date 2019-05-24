@@ -1,18 +1,20 @@
-package org.insa.algo;
+package org.insa.algo.shortestpath;
 
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.FileInputStream;
+import static org.junit.Assert.assertEquals; 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.insa.algo.ArcInspector;
 import org.insa.algo.ArcInspectorFactory;
-import org.insa.algo.shortestpath.DijkstraAlgorithm;
-import org.insa.algo.shortestpath.ShortestPathData;
-import org.insa.algo.shortestpath.ShortestPathSolution;
+import org.insa.algo.AbstractSolution.Status;
+import org.insa.graph.RoadInformation.RoadType;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import org.insa.graph.Arc;
 import org.insa.graph.Path;
@@ -20,17 +22,10 @@ import org.insa.graph.Graph;
 import org.insa.graph.Node;
 import org.insa.graph.RoadInformation;
 
-import org.insa.graph.io.BinaryGraphReader;
-import org.insa.graph.io.GraphReader;
-
-import org.insa.graph.RoadInformation.RoadType;
-
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-
 public class DijkstraTest {
+	
+	//Arc inspector
+	List<ArcInspector> filters = ArcInspectorFactory.getAllFilters();
 
     // Small graph use for tests
     private static Graph graph;
@@ -43,9 +38,10 @@ public class DijkstraTest {
     private static Arc a2b, a2c, a2e, b2c, c2d_1, c2d_2, c2d_3, c2a, d2a, d2e, e2d;
 
     // Some paths...
+    @SuppressWarnings("unused")
     private static Path emptyPath, singleNodePath, shortPath, longPath, loopPath, longLoopPath,
             invalidPath;
-    
+
     @BeforeClass
     public static void initAll() throws IOException {
 
@@ -54,7 +50,7 @@ public class DijkstraTest {
                 speed20 = new RoadInformation(RoadType.MOTORWAY, null, true, 72, "");
 
         // Create nodes
-        nodes = new Node[5];
+        nodes = new Node[6];
         for (int i = 0; i < nodes.length; ++i) {
             nodes[i] = new Node(i, null);
         }
@@ -83,14 +79,43 @@ public class DijkstraTest {
         invalidPath = new Path(graph, Arrays.asList(new Arc[] { a2b, c2d_1, d2e }));
 
     }
-    
-    @Test
-    public void Scneario1 () {
-    	String nomMap = "/home/jonathan/Documents/begrapheMahrayeAndrieu/carre.mapgr";
-    	int type = 1 ;
-    	int origine = 15;
-    	int destination = 22;
-    	DijkstraTestScenario.testScenario(nomMap, type, origine, destination);
-    }
-   
+
+	
+	ShortestPathData dataZero =new ShortestPathData(graph, nodes[0], nodes[0],filters.get(0));
+	ShortestPathData dataImpossible =new ShortestPathData(graph, nodes[0], nodes[5],filters.get(0));
+	
+	ShortestPathData dataOne = new ShortestPathData(graph, nodes[0], nodes[3], filters.get(0));
+	ShortestPathData dataTwo = new ShortestPathData(graph, nodes[0], nodes[4], filters.get(0));
+	
+	@Test
+	public void test() {
+		System.out.println("#### ----- Tests de validité ----- ####") ;
+		System.out.println();
+		
+		System.out.println("---- Test chemin impossible ----") ;
+		DijkstraAlgorithm dij = new DijkstraAlgorithm(dataImpossible);
+		ShortestPathSolution sol=dij.doRun(); 
+		assertEquals(sol.getStatus(), Status.INFEASIBLE);
+		System.out.println();
+		
+		System.out.println("---- Test chemin null ----") ;
+		dij = new DijkstraAlgorithm(dataZero);
+		sol=dij.doRun(); 
+		assertEquals(sol.getStatus(), Status.INFEASIBLE);
+		System.out.println();
+		
+		System.out.println("---- Test chemin court ----") ;
+		dij = new DijkstraAlgorithm(dataOne);
+		sol=dij.doRun(); 
+		assertEquals(sol.getPath(), shortPath);
+		System.out.println();
+		
+		System.out.println("---- Test chemin long ----") ;
+		dij = new DijkstraAlgorithm(dataTwo);
+		sol=dij.doRun(); 
+		assertEquals(sol.getPath(), longPath);
+		System.out.println();
+		
+	}
+
 }

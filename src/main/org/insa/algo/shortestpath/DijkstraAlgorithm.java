@@ -112,14 +112,14 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	}
         	
         	/* Test de la croissance des coûts des labels marqués pour Dijkstra */
-        	Label new_min = labelHeap.findMin();
+        	/*Label new_min = labelHeap.findMin();
         	int res = new_min.compareTo(minLabel) ;
         	if(res == 1) {
         		System.out.println("[OK] Cout lbCurrent = "+minLabel.getCost()+" < Cout lbSucess = "+new_min.getCost());
         	}
         	else if(res == -1){
         		System.out.println("[Warning] Cout lbCurrent = "+minLabel.getCost()+" > Cout lbSucess = "+new_min.getCost());
-        	}
+        	}*/
         	
         	/* Calcul du nombre d'itération */
         	nbIter++;
