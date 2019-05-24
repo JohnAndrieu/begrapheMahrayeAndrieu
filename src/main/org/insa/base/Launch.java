@@ -1,6 +1,6 @@
 package org.insa.base;
 
-import java.awt.BorderLayout;
+import java.awt.BorderLayout; 
 import java.awt.Dimension;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;

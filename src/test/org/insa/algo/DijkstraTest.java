@@ -1,8 +1,8 @@
 package org.insa.algo;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,20 +10,25 @@ import java.util.Arrays;
 
 import org.insa.algo.ArcInspector;
 import org.insa.algo.ArcInspectorFactory;
-import org.insa.algo.shortestpath.BellmanFordAlgorithm;
 import org.insa.algo.shortestpath.DijkstraAlgorithm;
 import org.insa.algo.shortestpath.ShortestPathData;
 import org.insa.algo.shortestpath.ShortestPathSolution;
+
 import org.insa.graph.Arc;
 import org.insa.graph.Path;
 import org.insa.graph.Graph;
 import org.insa.graph.Node;
 import org.insa.graph.RoadInformation;
 
+import org.insa.graph.io.BinaryGraphReader;
+import org.insa.graph.io.GraphReader;
+
 import org.insa.graph.RoadInformation.RoadType;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class DijkstraTest {
 
@@ -78,18 +83,14 @@ public class DijkstraTest {
         invalidPath = new Path(graph, Arrays.asList(new Arc[] { a2b, c2d_1, d2e }));
 
     }
-
+    
     @Test
-    public void testScenario() {
-	    for (int i = 0 ; i < nodes.length; i++) {
-    		for (int j = 0 ; j < nodes.length ; j++) {
-	    		ArcInspector arcInspectorDijkstra = new ArcInspectorFactory().getAllFilters().get(0); //length
-	    		DijkstraAlgorithm myDijkstra = new DijkstraAlgorithm(data);
-	    		ShortestPathData data = new ShortestPathData(graph, nodes[i],nodes[j], arcInspectorDijkstra);
-	    		assertTrue(emptyPath.isValid());
-	    	}
-    	}
-    	
+    public void Scneario1 () {
+    	String nomMap = "/home/jonathan/Documents/begrapheMahrayeAndrieu/carre.mapgr";
+    	int type = 1 ;
+    	int origine = 15;
+    	int destination = 22;
+    	DijkstraTestScenario.testScenario(nomMap, type, origine, destination);
     }
    
 }
