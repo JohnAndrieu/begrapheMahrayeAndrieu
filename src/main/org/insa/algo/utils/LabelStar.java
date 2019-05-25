@@ -11,7 +11,7 @@ public class LabelStar extends Label implements Comparable<Label> {
 	
 	public LabelStar (Node courant, ShortestPathData data) {
 		super(courant);
-		System.out.println("creation labelstar");
+		//System.out.println("creation labelstar");
 		
 		if (data.getMode() == AbstractInputData.Mode.LENGTH) {
 			this.borneInf = Point.distance(courant.getPoint(),data.getDestination().getPoint());
