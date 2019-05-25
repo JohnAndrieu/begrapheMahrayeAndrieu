@@ -6,10 +6,10 @@ import org.insa.graph.Node;
 public class Label implements Comparable<Label>{
 
 	private Node sommet_courant;
-	private boolean marque;
-	protected double cout;
+	private boolean marque; // true= marqué, false =non marqué
+	protected double cout; 
 	private Arc pere;
-	private boolean inTas;
+	private boolean inTas; //True: dans le tas, faux: pas dans le tas
 	
 	public Label (Node courant) {
 		this.sommet_courant = courant ;
@@ -22,7 +22,9 @@ public class Label implements Comparable<Label>{
 	public double getCost() {
 		return this.cout;
 	}
-	
+	/*
+	 * retourn si l'arc est marqué ou non
+	 */
 	public boolean getMark() {
 		return this.marque;
 	}
@@ -48,7 +50,9 @@ public class Label implements Comparable<Label>{
 	}
 	
 	
-	
+	/*
+	 * Check si le sommet est dans le tas ou non
+	 */
 	public boolean getInTas() {
 		return this.inTas;
 	}
