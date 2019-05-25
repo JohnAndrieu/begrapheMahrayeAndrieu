@@ -24,15 +24,19 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         Graph graph = data.getGraph();
         
         int sizeGraph = graph.size();
-        
+        // creation d'une liste de noeuds
         List<Node> nodeGraph = new ArrayList <Node> ();
+        // on récupère les noeuds du graphe
         nodeGraph = graph.getNodes() ;
 
         boolean fin = false;
-
+        
+        // creation d'une Hmap de Label
         HashMap<Integer, Label> hmap = new HashMap<Integer, Label>(); 
-
+        // mise en pace de l'iterator des noeuds
         Iterator<Node> nodeIt = nodeGraph.iterator();
+        /* Tant qu'il existe  un noeud: on crée un label correspondant 
+         * sauf pour l'origine (crée par la suite: eviter doublant */
         while(nodeIt.hasNext()) {
         	Node nodeCurrent = nodeIt.next();
         	if(nodeCurrent.equals(data.getOrigin())) {} else {
@@ -40,13 +44,13 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	}
         }
         
-        // Initialize array of predecessors.
+        // tableau de predecesseurs
         Arc[] predecessorArcs = new Arc[sizeGraph];
         
         // Tas de labels
         BinaryHeap<Label> labelHeap = new BinaryHeap <Label> () ;
         
-        // Ajout de l'origine
+        // Création et  Ajout de l'origine dans le tas de label
         Node origin = data.getOrigin() ;
         Label originLabel = Newlb(origin, data);
         hmap.put(origin.getId(), originLabel);
@@ -56,38 +60,43 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         originLabel.setCost(0);
         
         notifyOriginProcessed(data.getOrigin());
+        //compteur d'itérations
         int nbIter=0;
+        // tant qu'il existe des sommets non marqués 
         while(!labelHeap.isEmpty() && !fin) {	
         	
         	Label minLabel = labelHeap.deleteMin() ;
+        	
         	minLabel.setMark(true); 	
         	notifyNodeMarked(minLabel.getNode());
         	
         	
-        	
+        	// lorsque la destination est atteinte, arret de la boucle while
         	if (minLabel.getNode() == data.getDestination()) {
 				fin = true;
 			}
-        	
+        	// création liste d'arc successeur et son ieterator  
         	List<Arc> successeurs = new ArrayList <Arc>() ;
         	successeurs = minLabel.getNode().getSuccessors() ;
         	Iterator <Arc> arc = successeurs.iterator();
-
+        	// parcours du sommet courant
         	while(arc.hasNext()) {
         		
         		Arc arcIter = arc.next();
-        		
+        		// On verifie si on peut prendre cet arc
         		if (!data.isAllowed(arcIter)) {
 					continue;
 				}
         		
-        		int id = arcIter.getDestination().getId();
+        		int id = arcIter.getDestination().getId(); // on récupère l'id du successeur
+        		// On recupèe le label correspondant au noeud dans la Hmap
         		Label lbSuccess = hmap.get(id) ;
-        		
         		notifyNodeReached(arcIter.getDestination());
-        			
+        			// si le successeur n'est pas encore marqué on procède à la mise à jour des cout
 	        		if(!lbSuccess.getMark()) { 
-	        			
+	        			/* Si on obtient un meilleur coût 
+	        			 * alors on le met à jour
+	        			 */
 	        			if(lbSuccess.getTotalCost() > minLabel.getCost()
 	        					+ data.getCost(arcIter) + (lbSuccess.getTotalCost() - lbSuccess.getCost()) 
 	        					|| (lbSuccess.getCost()==Double.POSITIVE_INFINITY) ) {
@@ -96,10 +105,16 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 		        					+ (double)data.getCost(arcIter));
 	        				
 	        				lbSuccess.setFather(arcIter); 
-	        				
+	        				/*
+	        				 * Si le label est déjà dans le tas
+	        				 * on le met à jour sa position dans le tas
+	        				 */
 	        				if(lbSuccess.getInTas()) {
 	        					labelHeap.remove(lbSuccess);
 	        				}
+	        				/*
+	        				 * sinon on l'ajoute dans le tas
+	        				 */
 	        				else {
 	        					lbSuccess.setInTas();
 	        				}
