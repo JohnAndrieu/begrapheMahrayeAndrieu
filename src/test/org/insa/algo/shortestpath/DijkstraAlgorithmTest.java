@@ -22,7 +22,7 @@ import org.insa.graph.Graph;
 import org.insa.graph.Node;
 import org.insa.graph.RoadInformation;
 
-public class DijkstraTest {
+public class DijkstraAlgorithmTest {
 	
 	//Arc inspector
 	List<ArcInspector> filters = ArcInspectorFactory.getAllFilters();
@@ -88,34 +88,115 @@ public class DijkstraTest {
 	ShortestPathData dataTwo = new ShortestPathData(graph, nodes[0], nodes[4], filters.get(0));
 	
 	@Test
-	public void test() {
+	public void testCheminImpossible() {
 		System.out.println("#### ----- Tests de validité ----- ####") ;
-		System.out.println();
-		
 		System.out.println("---- Test chemin impossible ----") ;
 		DijkstraAlgorithm dij = new DijkstraAlgorithm(dataImpossible);
 		ShortestPathSolution sol=dij.doRun(); 
 		assertEquals(sol.getStatus(), Status.INFEASIBLE);
 		System.out.println();
 		
+	}
+	
+	@Test
+	public void testCheminNull () {
+		System.out.println("#### ----- Tests de validité ----- ####") ;
 		System.out.println("---- Test chemin null ----") ;
-		dij = new DijkstraAlgorithm(dataZero);
-		sol=dij.doRun(); 
+		DijkstraAlgorithm dij = new DijkstraAlgorithm(dataZero);
+		ShortestPathSolution sol=dij.doRun(); 
 		assertEquals(sol.getStatus(), Status.INFEASIBLE);
 		System.out.println();
-		
-		System.out.println("---- Test chemin court ----") ;
-		dij = new DijkstraAlgorithm(dataOne);
-		sol=dij.doRun(); 
-		assertEquals(sol.getPath(), shortPath);
-		System.out.println();
-		
-		System.out.println("---- Test chemin long ----") ;
-		dij = new DijkstraAlgorithm(dataTwo);
-		sol=dij.doRun(); 
-		assertEquals(sol.getPath(), longPath);
-		System.out.println();
-		
 	}
+	
+	@Test
+	public void testOracleMP_Time () throws Exception {	//Test sur carte Midi-Pyrénées 
+		System.out.println("#### ----- Tests de validité ----- ####") ;
+		System.out.println("---- Test avec Oracle => Time Midi-Pyrénées ----") ;
+		
+		String map = "/home/jonathan/Documents/begrapheMahrayeAndrieu/midi-pyrenees.mapgr" ;
+		
+		DijkstraScenarioTest test = new DijkstraScenarioTest () ;
+		
+		int destination = 103937 ; 
+		int origine = 628548;
+		int mode = 0;
+		
+		test.testScenario(map, mode, origine, destination);
+		
+		System.out.println();
+	}
+	
+	@Test
+	public void testOracleMP_Length () throws Exception {	//Test sur carte Midi-Pyrénées 
+		System.out.println("#### ----- Tests de validité ----- ####") ;
+		System.out.println("---- Test avec Oracle => Lenght Midi-Pyrénées ----") ;
+		
+		String map = "/home/jonathan/Documents/begrapheMahrayeAndrieu/midi-pyrenees.mapgr" ;
+		
+		DijkstraScenarioTest test = new DijkstraScenarioTest () ;
+		
+		int destination = 103937 ; 
+		int origine = 628548;
+		int mode = 1;
+		
+		test.testScenario(map, mode, origine, destination);
+		
+		System.out.println();
+	}
+	
+	@Test
+	public void testOracleTLS_Time () throws Exception {	//Test sur carte Midi-Pyrénées 
+		System.out.println("#### ----- Tests de validité ----- ####") ;
+		System.out.println("---- Test avec Oracle => Time Toulouse ----") ;
+		
+		String map = "/home/jonathan/Documents/begrapheMahrayeAndrieu/toulouse.mapgr" ;
+		
+		DijkstraScenarioTest test = new DijkstraScenarioTest () ;
+		
+		int destination = 15427 ; 
+		int origine = 16938;
+		int mode = 0;
+		
+		test.testScenario(map, mode, origine, destination);
+		
+		System.out.println();
+	}
+	
+	@Test
+	public void testOracleTLS_Length () throws Exception {	//Test sur carte Midi-Pyrénées 
+		System.out.println("#### ----- Tests de validité ----- ####") ;
+		System.out.println("---- Test avec Oracle => Lenght Toulouse ----") ;
+		
+		String map = "/home/jonathan/Documents/begrapheMahrayeAndrieu/toulouse.mapgr" ;
+		
+		DijkstraScenarioTest test = new DijkstraScenarioTest () ;
+		
+		int destination = 15427 ; 
+		int origine = 16938;
+		int mode = 1;
+		
+		test.testScenario(map, mode, origine, destination);
+		
+		System.out.println();
+	}
+	
+	@Test
+	public void testOracleGUAD_Impossible () throws Exception {	//Test sur carte Midi-Pyrénées 
+		System.out.println("#### ----- Tests de validité ----- ####") ;
+		System.out.println("---- Test avec Oracle => Impossible (non connexe) ----") ;
+		
+		String map = "/home/jonathan/Documents/begrapheMahrayeAndrieu/guadeloupe.mapgr" ;
+		
+		DijkstraScenarioTest test = new DijkstraScenarioTest () ;
+		
+		int destination = 15308 ; 
+		int origine = 13673;
+		int mode = 0;
+		
+		test.testScenario(map, mode, origine, destination);
+		
+		System.out.println();
+	}
+	
 
 }
