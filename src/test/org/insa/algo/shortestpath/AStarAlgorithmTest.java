@@ -22,7 +22,7 @@ import org.insa.graph.Graph;
 import org.insa.graph.Node;
 import org.insa.graph.RoadInformation;
 
-public class DijkstraAlgorithmTest {
+public class AStarAlgorithmTest {
 	
 	//Arc inspector
 	List<ArcInspector> filters = ArcInspectorFactory.getAllFilters();
@@ -79,31 +79,23 @@ public class DijkstraAlgorithmTest {
         invalidPath = new Path(graph, Arrays.asList(new Arc[] { a2b, c2d_1, d2e }));
 
     }
-
 	
-	ShortestPathData dataZero =new ShortestPathData(graph, nodes[0], nodes[0],filters.get(0));
-	ShortestPathData dataImpossible =new ShortestPathData(graph, nodes[0], nodes[5],filters.get(0));
-	
-	ShortestPathData dataOne = new ShortestPathData(graph, nodes[0], nodes[3], filters.get(0));
-	ShortestPathData dataTwo = new ShortestPathData(graph, nodes[0], nodes[4], filters.get(0));
 	
 	@Test
-	public void testCheminImpossible() {
-		System.out.println("#### ----- Tests de validité ----- ####") ;
-		System.out.println("---- Test chemin impossible ----") ;
-		DijkstraAlgorithm dij = new DijkstraAlgorithm(dataImpossible);
-		ShortestPathSolution sol=dij.doRun(); 
-		assertEquals(sol.getStatus(), Status.INFEASIBLE);
-		System.out.println();
-	}
-	
-	@Test
-	public void testCheminNull () {
+	public void testCheminNull () throws Exception {
 		System.out.println("#### ----- Tests de validité ----- ####") ;
 		System.out.println("---- Test chemin null ----") ;
-		DijkstraAlgorithm dij = new DijkstraAlgorithm(dataZero);
-		ShortestPathSolution sol=dij.doRun(); 
-		assertEquals(sol.getStatus(), Status.INFEASIBLE);
+		
+		String map = "/home/jonathan/Documents/begrapheMahrayeAndrieu/toulouse.mapgr" ;
+		
+		AStarScenarioTest test = new AStarScenarioTest () ;
+		
+		int destination = 0 ; 
+		int origine = 0;
+		int mode = 0;
+		
+		test.testScenario(map, mode, origine, destination);
+		
 		System.out.println();
 	}
 	
@@ -114,7 +106,7 @@ public class DijkstraAlgorithmTest {
 		
 		String map = "/home/jonathan/Documents/begrapheMahrayeAndrieu/midi-pyrenees.mapgr" ;
 		
-		DijkstraScenarioTest test = new DijkstraScenarioTest () ;
+		AStarScenarioTest test = new AStarScenarioTest () ;
 		
 		int destination = 103937 ; 
 		int origine = 628548;
@@ -132,7 +124,7 @@ public class DijkstraAlgorithmTest {
 		
 		String map = "/home/jonathan/Documents/begrapheMahrayeAndrieu/midi-pyrenees.mapgr" ;
 		
-		DijkstraScenarioTest test = new DijkstraScenarioTest () ;
+		AStarScenarioTest test = new AStarScenarioTest () ;
 		
 		int destination = 103937 ; 
 		int origine = 628548;
@@ -150,7 +142,7 @@ public class DijkstraAlgorithmTest {
 		
 		String map = "/home/jonathan/Documents/begrapheMahrayeAndrieu/toulouse.mapgr" ;
 		
-		DijkstraScenarioTest test = new DijkstraScenarioTest () ;
+		AStarScenarioTest test = new AStarScenarioTest () ;
 		
 		int destination = 15427 ; 
 		int origine = 16938;
@@ -168,7 +160,7 @@ public class DijkstraAlgorithmTest {
 		
 		String map = "/home/jonathan/Documents/begrapheMahrayeAndrieu/toulouse.mapgr" ;
 		
-		DijkstraScenarioTest test = new DijkstraScenarioTest () ;
+		AStarScenarioTest test = new AStarScenarioTest () ;
 		
 		int destination = 15427 ; 
 		int origine = 16938;
@@ -186,7 +178,7 @@ public class DijkstraAlgorithmTest {
 		
 		String map = "/home/jonathan/Documents/begrapheMahrayeAndrieu/guadeloupe.mapgr" ;
 		
-		DijkstraScenarioTest test = new DijkstraScenarioTest () ;
+		AStarScenarioTest test = new AStarScenarioTest () ;
 		
 		int destination = 15308 ; 
 		int origine = 13673;

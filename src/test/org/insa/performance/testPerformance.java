@@ -13,21 +13,19 @@ public class testPerformance {
 	private int destination;
 	private float tempsExecutionDijkstra;
 	private float tempsExecutionAStar;
-	private int nbSommetsDijsktra;
-	private int nbSommetsAStar;
 	
 	public testPerformance() {
 		this.listeResultatPerformance = new ArrayList<resTestPerformance>();
 	}
 	
-	public void run (String fichierLecture, String fichierEcriture, int mode){
+	public void run (String fichierLecture, String fichierEcriture){
 		
 		/* LECTURE */
 		
 		lecture lect = new lecture(fichierLecture);
 		
 		/* INITIALISATION */
-		
+		int mode = lect.getMode() ;
 		String carte = lect.getMapName() ;
 		Iterator<Integer> origineIter = lect.getListeOrigine().iterator();
 		Iterator<Integer> destinationIter = lect.getListeDestination().iterator();
@@ -46,9 +44,8 @@ public class testPerformance {
 		}
 		
 		/* ECRITURE */
-		
 		new ecriture (fichierEcriture, carte, this.listeResultatPerformance);
-		
+		System.out.println("Ecriture effectuée dans " + fichierEcriture);
 	}
 	
 	public int getOrigine() {
@@ -66,14 +63,6 @@ public class testPerformance {
 	
 	public float getTempsExecutionAStar() {
 		return this.tempsExecutionAStar;
-	}
-	
-	public int getNbSommetsVisitesDijkstra() {
-		return this.nbSommetsDijsktra;
-	}
-	
-	public int getNbSommetsVisitesAStar() {
-		return this.nbSommetsAStar;
 	}
 	
 }

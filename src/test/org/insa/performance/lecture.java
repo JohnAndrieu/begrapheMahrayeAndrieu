@@ -29,14 +29,17 @@ public class lecture {
 			/* Recupere le nom de la carte */
 			if (scan.hasNext()) {
 				mapName = scan.nextLine();
+				System.out.println("Carte => " + mapName);
 			}
 			
 			if (scan.hasNext()) {
 				mode = scan.nextInt();
+				System.out.println("Mode => " + mode);
 			}
 			
 			if (scan.hasNext()) {
 				nbChemin = scan.nextInt();
+				System.out.println("Nombre chemin => " + nbChemin);
 			}
 			
 			/* Recupere les origines et destinations */

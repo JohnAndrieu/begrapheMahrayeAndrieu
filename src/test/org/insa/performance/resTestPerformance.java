@@ -20,6 +20,8 @@ public class resTestPerformance {
 	private float tempsExecutionAStar;
 	private int nbSommetsDijsktra;
 	private int nbSommetsAStar;
+	private int nbIterDijsktra; 
+	private int nbIterAStar; 
 
 	public resTestPerformance(String mapName, int typeEvaluation, int origine, int destination) {
 
@@ -49,7 +51,8 @@ public class resTestPerformance {
 
 		long tempsDeb;
 		long tempsFin;
-
+		
+		/* DIJKSTRA */
 		/* Calcul du temps d'exécution de Dijkstra */
 		DijkstraAlgorithm D = new DijkstraAlgorithm(data);
 		
@@ -58,11 +61,13 @@ public class resTestPerformance {
 		tempsFin = System.nanoTime();
 		
 		this.tempsExecutionDijkstra = (tempsFin-tempsDeb)/1000000.0f;
-		
+		this.nbSommetsDijsktra = D.getNbSommetsVisites();
+		this.nbIterDijsktra = D.getNbIter();
 
 		tempsDeb = 0;
 		tempsFin = 0;
-			
+		
+		/* ASTAR */
 		/* Calcul du temps d'exécution d'AStar */
 		AStarAlgorithm A = new AStarAlgorithm(data);
 		
@@ -71,6 +76,9 @@ public class resTestPerformance {
 		tempsFin = System.nanoTime();
 			
 		this.tempsExecutionAStar = (tempsFin-tempsDeb)/1000000.0f;
+		this.nbSommetsAStar = A.getNbSommetsVisites();
+		this.nbIterAStar = A.getNbIter();
+		
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -86,7 +94,6 @@ public class resTestPerformance {
 	}
 	
 	public float getTempsExecutionDijkstra() {
-
 		return this.tempsExecutionDijkstra;
 	}
 	
@@ -100,6 +107,14 @@ public class resTestPerformance {
 	
 	public int getNbSommetsVisitesAStar() {
 		return this.nbSommetsAStar;
+	}
+	
+	public int getNbIterDijkstra() {
+		return this.nbIterDijsktra;
+	}
+	
+	public int getNbIterAStar() {
+		return this.nbIterAStar;
 	}
 
 }

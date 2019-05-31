@@ -15,7 +15,7 @@ import org.insa.graph.io.GraphReader;
 
 import org.junit.Test;
 
-public class DijkstraScenarioTest {
+public class AStarScenarioTest {
 	
 	
 	@Test
@@ -51,35 +51,35 @@ public class DijkstraScenarioTest {
 			ShortestPathData data = new ShortestPathData(graph, graph.get(origine),graph.get(destination), arcInspectorDijkstra);
 
 			BellmanFordAlgorithm B = new BellmanFordAlgorithm(data);
-			DijkstraAlgorithm D = new DijkstraAlgorithm(data);
+			AStarAlgorithm A = new AStarAlgorithm(data);
 			
-			// Recuperation des solutions de Bellman et Dijkstra pour comparer 
-			System.out.println("Test : Run Dijkstra");
-			ShortestPathSolution solD = D.run();
+			// Recuperation des solutions de Bellman et AStar pour comparer 
+			System.out.println("Test : Run AStar");
+			ShortestPathSolution solA = A.run();
 			System.out.println("Test : Run Bellman Ford");
 			ShortestPathSolution solB = B.run();
 			
-			if (solD.getPath() == null) {
-				assertEquals(solB.getPath(), solD.getPath());
+			if (solA.getPath() == null) {
+				assertEquals(solB.getPath(), solA.getPath());
 				System.out.println("Pas de chemins trouvé");
 			}
 			// Un plus court chemin trouve 
 			else {
 				
-				double coutD;	//cout selon Dijkstra
+				double coutA;	//cout selon Dijkstra
 				double coutB;	//cout selon Bellman
 				
 				if(modeEvaluation == 0) { //Temps
 					//Calcul du cout de la solution 
-					coutD = solD.getPath().getMinimumTravelTime();
+					coutA = solA.getPath().getMinimumTravelTime();
 					coutB = solB.getPath().getMinimumTravelTime();
 				} else { //Distance
-					coutD = solD.getPath().getLength();
+					coutA = solA.getPath().getLength();
 					coutB = solB.getPath().getLength();
 				}
 				
-				assertEquals(coutB, coutD, 0.001); //Comparaison
-				System.out.println("Cout solution Dijkstra : " + coutD);
+				assertEquals(coutB, coutA, 0.001); //Comparaison
+				System.out.println("Cout solution Astar : " + coutA);
 				System.out.println("Cout solution Bellman : " + coutB);
 				
 			}

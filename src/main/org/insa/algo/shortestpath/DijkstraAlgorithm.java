@@ -13,8 +13,13 @@ import org.insa.graph.Path;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
+	protected int nbSommetsVisites;
+    protected int nbIter ;
+	
     public DijkstraAlgorithm(ShortestPathData data) {
         super(data);
+        this.nbSommetsVisites = 0 ;
+        this.nbIter = 0 ;
     }
 
     @Override
@@ -24,25 +29,29 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         Graph graph = data.getGraph();
         
         int sizeGraph = graph.size();
+        
         // creation d'une liste de noeuds
-        List<Node> nodeGraph = new ArrayList <Node> ();
+        //List<Node> nodeGraph = new ArrayList <Node> ();
+        
         // on récupère les noeuds du graphe
-        nodeGraph = graph.getNodes() ;
+        //nodeGraph = graph.getNodes() ;
 
         boolean fin = false;
         
         // creation d'une Hmap de Label
         HashMap<Integer, Label> hmap = new HashMap<Integer, Label>(); 
+        
         // mise en pace de l'iterator des noeuds
-        Iterator<Node> nodeIt = nodeGraph.iterator();
+        //Iterator<Node> nodeIt = nodeGraph.iterator();
+        
         /* Tant qu'il existe  un noeud: on crée un label correspondant 
          * sauf pour l'origine (crée par la suite: eviter doublant */
-        while(nodeIt.hasNext()) {
+        /*while(nodeIt.hasNext()) {
         	Node nodeCurrent = nodeIt.next();
         	if(nodeCurrent.equals(data.getOrigin())) {} else {
         	hmap.put(nodeCurrent.getId(),Newlb (nodeCurrent, data)) ;
         	}
-        }
+        }*/
         
         // tableau de predecesseurs
         Arc[] predecessorArcs = new Arc[sizeGraph];
@@ -60,10 +69,13 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         originLabel.setCost(0);
         
         notifyOriginProcessed(data.getOrigin());
-        //compteur d'itérations
-        int nbIter=0;
+        
+        
+        
         // tant qu'il existe des sommets non marqués 
         while(!labelHeap.isEmpty() && !fin) {	
+        	
+        	nbIter++;
         	
         	Label minLabel = labelHeap.deleteMin() ;
         	
@@ -89,9 +101,20 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 				}
         		
         		int id = arcIter.getDestination().getId(); // on récupère l'id du successeur
+        		Node success = arcIter.getDestination() ;
+        		
         		// On recupèe le label correspondant au noeud dans la Hmap
         		Label lbSuccess = hmap.get(id) ;
-        		notifyNodeReached(arcIter.getDestination());
+        		
+        		if(lbSuccess == null) {
+        			notifyNodeReached(arcIter.getDestination());
+        			lbSuccess = Newlb(success,data);
+        			hmap.put(id, lbSuccess) ;
+        			
+        			this.nbSommetsVisites++;
+        		}
+        		
+
         			// si le successeur n'est pas encore marqué on procède à la mise à jour des cout
 	        		if(!lbSuccess.getMark()) { 
 	        			/* Si on obtient un meilleur coût 
@@ -136,12 +159,12 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         		System.out.println("[Warning] Cout lbCurrent = "+minLabel.getCost()+" > Cout lbSucess = "+new_min.getCost());
         	}*/
         	
-        	/* Calcul du nombre d'itération */
-        	//nbIter++;
+        	
 
         }
         
         //System.out.println("Nombre d'itérations : "+ nbIter);
+        //System.out.println("Nombre de sommets visités : "+ nbSommetsVisites);
         
      // Destination has no predecessor, the solution is infeasible...
      		if (predecessorArcs[data.getDestination().getId()] == null) {
@@ -174,9 +197,18 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
         return solution;
     }
+    
     /* Crée et retourne le Label correspondant au Node */
 	protected Label Newlb(Node node, ShortestPathData data) {
 		return new Label(node);
+	}
+	
+	public int getNbSommetsVisites() {
+		return this.nbSommetsVisites;
+	}
+	
+	public int getNbIter() {
+		return this.nbIter;
 	}
 
 }

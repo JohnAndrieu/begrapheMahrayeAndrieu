@@ -11,11 +11,11 @@ public class ecriture {
 		
 	String espace = " ";
 	String retour = "\n" ;
-	String fileEnTete ="Carte,Origine,Destination,Temps CPU Dijkstra (en ms), "
-			+ "Temps CPU A* (en ms)"; // En tete du fichier
+	String fileEnTete = "Carte, Origine, Destination, Temps CPU Dijkstra (en ms), "
+			+ "Nb Sommets Dijkstra, Nb iter Dijkstra, Temps CPU A* (en ms), Nb Sommets AStar, Nb iter AStar"; // En tete du fichier
 		
 	try{
-		FileWriter fileWriter = new FileWriter("src\\test\\"+fileWrite); // définir l'arborescence
+		FileWriter fileWriter = new FileWriter("/home/jonathan/Documents/begrapheMahrayeAndrieu/src/test/org/insa/"+fileWrite); // définir l'arborescence
 		fileWriter.append(fileEnTete); //on écrit l'en-tete 
 		fileWriter.append(retour); // forcer le passage à la ligne
 		
@@ -30,16 +30,22 @@ public class ecriture {
 	 		fileWriter.append(espace);
 	 		fileWriter.append(String.valueOf(ligne.getNbSommetsVisitesDijkstra()));
 	 		fileWriter.append(espace);
+	 		fileWriter.append(String.valueOf(ligne.getNbIterDijkstra()));
+	 		fileWriter.append(espace);
 	 		fileWriter.append(String.valueOf(ligne.getTempsExecutionAStar()));
 	 		fileWriter.append(espace);
 	 		fileWriter.append(String.valueOf(ligne.getNbSommetsVisitesAStar()));
+	 		fileWriter.append(espace);
+	 		fileWriter.append(String.valueOf(ligne.getNbIterAStar()));
 			fileWriter.append(retour); // forcer le passage à la ligne
 		}
 		fileWriter.flush();
 		fileWriter.close(); // fermer le fichier à la fin des traitements
 		System.out.println("Ecriture effectuée");	
 	} 
-	catch (Exception e) {}
+	catch (Exception e) {
+		System.out.println(e.getMessage()) ;
+	}
 	
 	}
 
